@@ -1,0 +1,137 @@
+.login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 4rem;
+  gap: 3rem;
+}
+
+.login-section__buttons {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.login-section__student,
+.login-section__admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 280px;
+  height: 320px;
+  padding: 2rem;
+  text-decoration: none;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: #e6edff;
+}
+
+.login-section__student:hover,
+.login-section__admin:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  background: #d1e0ff;
+}
+
+.login-section__icon {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #2a4ad9;
+}
+
+.login-section__text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2a4ad9;
+  text-align: center;
+}
+
+.login-section-signup-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.login-section-signup-text {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.login-section-signup-link {
+  color: #2a4ad9;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+
+.login-section-signup-link:hover {
+  color: #1a3ac9;
+  text-decoration: underline;
+}
+
+.login-section-alternative {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.login-section-alternative-link {
+  color: #666;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  border-bottom: 1px solid transparent;
+}
+
+.login-section-alternative-link:hover {
+  color: #2a4ad9;
+  border-bottom-color: #2a4ad9;
+}
+
+@media (max-width: 768px) {
+  .login-section {
+    padding: 2rem 1rem;
+    gap: 2rem;
+    min-height: 70vh;
+  }
+  
+  .login-section__buttons {
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+  }
+  
+  .login-section__student,
+  .login-section__admin {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    padding: 1.5rem;
+  }
+  
+  .login-section__icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .login-section__text {
+    font-size: 1.3rem;
+  }
+  
+  .login-section-signup-row {
+    flex-direction: column;
+    gap: 0.3rem;
+    text-align: center;
+  }
+  
+  .login-section-signup-text,
+  .login-section-signup-link {
+    font-size: 1rem;
+  }
+}
