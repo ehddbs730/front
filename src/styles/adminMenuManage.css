@@ -3,7 +3,7 @@ body, html, #root {
 }
 
 .admin-menu-manage-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 60px auto 0 auto;
   padding: 40px;
   min-height: 100vh;
@@ -138,165 +138,6 @@ body, html, #root {
   color: #fff;
 }
 
-/* 모달 스타일 */
-.admin-menu-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-}
-
-.admin-menu-modal {
-  background: #fff;
-  border-radius: 16px;
-  padding: 0;
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.admin-menu-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-  border-bottom: 1px solid #eee;
-  background: #f8f9fa;
-  border-radius: 16px 16px 0 0;
-}
-
-.admin-menu-modal-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2a4ad9;
-  margin: 0;
-}
-
-.admin-menu-modal-close {
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #666;
-  cursor: pointer;
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-.admin-menu-modal-close:hover {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.admin-menu-modal-form {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.admin-menu-modal-form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.admin-menu-modal-form-label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #2a4ad9;
-}
-
-.admin-menu-modal-form-input,
-.admin-menu-modal-form-select {
-  padding: 12px 16px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #fff;
-  transition: border-color 0.3s ease;
-}
-
-.admin-menu-modal-form-input:focus,
-.admin-menu-modal-form-select:focus {
-  outline: none;
-  border-color: #2a4ad9;
-}
-
-.admin-menu-modal-checkbox-group {
-  display: flex;
-  margin-top: 8px;
-}
-
-.admin-menu-modal-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  color: #2a4ad9;
-  cursor: pointer;
-}
-
-.admin-menu-modal-checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #2a4ad9;
-}
-
-.admin-menu-modal-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.admin-menu-modal-cancel-btn {
-  flex: 1;
-  background: #f8f9fa;
-  color: #666;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.admin-menu-modal-cancel-btn:hover {
-  background: #e9ecef;
-  border-color: #adb5bd;
-}
-
-.admin-menu-modal-submit-btn {
-  flex: 1;
-  background: #2a4ad9;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.admin-menu-modal-submit-btn:hover {
-  background: #1a3ac9;
-  transform: translateY(-1px);
-}
 
 /* 모바일 반응형 */
 @media (max-width: 768px) {
@@ -327,18 +168,6 @@ body, html, #root {
     font-size: 1rem;
   }
   
-  .admin-menu-modal {
-    width: 95%;
-    margin: 20px;
-  }
-  
-  .admin-menu-modal-header {
-    padding: 15px 20px;
-  }
-  
-  .admin-menu-modal-form {
-    padding: 20px;
-  }
   
   .admin-menu-table {
     font-size: 0.8rem;

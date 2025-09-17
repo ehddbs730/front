@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import MenuModal from '../components/MenuModal';
 import '../styles/adminMenuManage.css';
 
 function AdminMenuManage() {
@@ -9,15 +10,6 @@ function AdminMenuManage() {
   
   // 전달받은 매장 정보
   const store = location.state?.store || { name: '학생회관 식당' };
-
-  // 폼 데이터 상태
-  const [formData, setFormData] = useState({
-    menuName: '',
-    price: '',
-    tickets: '',
-    category: '',
-    visible: true
-  });
 
   // 모달 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,37 +24,13 @@ function AdminMenuManage() {
   // 카테고리 옵션
   const categories = ['한식', '중식', '일식', '정식', '분식'];
 
-  // 폼 입력 핸들러
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
-
   // 메뉴 등록 핸들러
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.menuName && formData.price && formData.tickets && formData.category) {
-      const newMenu = {
-        id: Date.now(),
-        name: formData.menuName,
-        visible: formData.visible,
-        price: parseInt(formData.price),
-        tickets: parseInt(formData.tickets),
-        category: formData.category
-      };
-      setMenuList(prev => [...prev, newMenu]);
-      setFormData({
-        menuName: '',
-        price: '',
-        tickets: '',
-        category: '',
-        visible: true
-      });
-      setIsModalOpen(false); // 모달 닫기
-    }
+  const handleMenuSubmit = (menuData) => {
+    const newMenu = {
+      id: Date.now(),
+      ...menuData
+    };
+    setMenuList(prev => [...prev, newMenu]);
   };
 
   // 모달 열기/닫기 핸들러
@@ -72,13 +40,6 @@ function AdminMenuManage() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setFormData({
-      menuName: '',
-      price: '',
-      tickets: '',
-      category: '',
-      visible: true
-    });
   };
 
   // 메뉴 삭제 핸들러
@@ -150,99 +111,11 @@ function AdminMenuManage() {
       </div>
 
       {/* 모달 */}
-      {isModalOpen && (
-        <div className="admin-menu-modal-overlay" onClick={handleCloseModal}>
-          <div className="admin-menu-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="admin-menu-modal-header">
-              <h2 className="admin-menu-modal-title">메뉴 등록</h2>
-              <button className="admin-menu-modal-close" onClick={handleCloseModal}>
-                ×
-              </button>
-            </div>
-            
-            <form onSubmit={handleSubmit} className="admin-menu-modal-form">
-              <div className="admin-menu-modal-form-group">
-                <label className="admin-menu-modal-form-label">추가할 메뉴</label>
-                <input
-                  type="text"
-                  name="menuName"
-                  value={formData.menuName}
-                  onChange={handleInputChange}
-                  placeholder="메뉴 이름을 입력하세요."
-                  className="admin-menu-modal-form-input"
-                  required
-                />
-              </div>
-
-              <div className="admin-menu-modal-form-group">
-                <label className="admin-menu-modal-form-label">가격</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  placeholder="가격을 입력하세요."
-                  className="admin-menu-modal-form-input"
-                  required
-                />
-              </div>
-
-              <div className="admin-menu-modal-form-group">
-                <label className="admin-menu-modal-form-label">식권 매수</label>
-                <input
-                  type="number"
-                  name="tickets"
-                  value={formData.tickets}
-                  onChange={handleInputChange}
-                  placeholder="식권 매수를 입력하세요."
-                  className="admin-menu-modal-form-input"
-                  required
-                />
-              </div>
-
-              <div className="admin-menu-modal-form-group">
-                <label className="admin-menu-modal-form-label">카테고리</label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  className="admin-menu-modal-form-select"
-                  required
-                >
-                  <option value="">카테고리를 선택하세요</option>
-                  {categories.map(category => (
-                    <option key={category} value={category}>{category}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="admin-menu-modal-form-group">
-                <label className="admin-menu-modal-form-label">메뉴 표시하기</label>
-                <div className="admin-menu-modal-checkbox-group">
-                  <label className="admin-menu-modal-checkbox-label">
-                    <input
-                      type="checkbox"
-                      name="visible"
-                      checked={formData.visible}
-                      onChange={handleInputChange}
-                    />
-                    메뉴 표시
-                  </label>
-                </div>
-              </div>
-
-              <div className="admin-menu-modal-buttons">
-                <button type="button" className="admin-menu-modal-cancel-btn" onClick={handleCloseModal}>
-                  취소
-                </button>
-                <button type="submit" className="admin-menu-modal-submit-btn">
-                  등록하기
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <MenuModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleMenuSubmit}
+      />
     </>
   );
 }
