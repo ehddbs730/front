@@ -16,7 +16,7 @@
     "predeploy" : "npm run build",
     "deploy" : "gh-pages -d build"
   },
-  "homepage": "https://ehddbs730.github.io/front/",
+  "homepage": "https://ehddbs730.github.io/front",
   "eslintConfig": {
     "extends": [
       "react-app"
