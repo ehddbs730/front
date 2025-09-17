@@ -19,6 +19,9 @@ function AdminMenuManage() {
     visible: true
   });
 
+  // 모달 상태
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // 메뉴 목록 상태
   const [menuList, setMenuList] = useState([
     { id: 1, name: '짜장볶음밥', visible: true, price: 5000, tickets: 65, category: '중식' },
@@ -58,7 +61,24 @@ function AdminMenuManage() {
         category: '',
         visible: true
       });
+      setIsModalOpen(false); // 모달 닫기
     }
+  };
+
+  // 모달 열기/닫기 핸들러
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setFormData({
+      menuName: '',
+      price: '',
+      tickets: '',
+      category: '',
+      visible: true
+    });
   };
 
   // 메뉴 삭제 핸들러
@@ -80,86 +100,6 @@ function AdminMenuManage() {
         </div>
 
         <div className="admin-menu-manage-content">
-          {/* 메뉴 등록/수정 섹션 */}
-          <div className="admin-menu-form-section">
-            <h2 className="admin-menu-form-title">메뉴 등록</h2>
-            <form onSubmit={handleSubmit} className="admin-menu-form">
-              <div className="admin-menu-form-group">
-                <label className="admin-menu-form-label">추가할 메뉴</label>
-                <input
-                  type="text"
-                  name="menuName"
-                  value={formData.menuName}
-                  onChange={handleInputChange}
-                  placeholder="메뉴 이름을 입력하세요."
-                  className="admin-menu-form-input"
-                  required
-                />
-              </div>
-
-              <div className="admin-menu-form-group">
-                <label className="admin-menu-form-label">가격</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  placeholder="가격을 입력하세요."
-                  className="admin-menu-form-input"
-                  required
-                />
-              </div>
-
-              <div className="admin-menu-form-group">
-                <label className="admin-menu-form-label">식권 매수</label>
-                <input
-                  type="number"
-                  name="tickets"
-                  value={formData.tickets}
-                  onChange={handleInputChange}
-                  placeholder="식권 매수를 입력하세요."
-                  className="admin-menu-form-input"
-                  required
-                />
-              </div>
-
-              <div className="admin-menu-form-group">
-                <label className="admin-menu-form-label">카테고리</label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  className="admin-menu-form-select"
-                  required
-                >
-                  <option value="">카테고리를 선택하세요</option>
-                  {categories.map(category => (
-                    <option key={category} value={category}>{category}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="admin-menu-form-group">
-                <label className="admin-menu-form-label">메뉴 표시하기 *</label>
-                <div className="admin-menu-checkbox-group">
-                  <label className="admin-menu-checkbox-label">
-                    <input
-                      type="checkbox"
-                      name="visible"
-                      checked={formData.visible}
-                      onChange={handleInputChange}
-                    />
-                    메뉴 표시
-                  </label>
-                </div>
-              </div>
-
-              <button type="submit" className="admin-menu-submit-btn">
-                등록하기
-              </button>
-            </form>
-          </div>
-
           {/* 메뉴 현황 섹션 */}
           <div className="admin-menu-status-section">
             <h2 className="admin-menu-status-title">메뉴 현황</h2>
@@ -199,10 +139,110 @@ function AdminMenuManage() {
           </div>
         </div>
 
+        {/* 등록하기 버튼 */}
+        <button className="admin-menu-add-btn" onClick={handleOpenModal}>
+          등록하기
+        </button>
+
         <button className="admin-menu-back-btn" onClick={handleBack}>
           이전으로
         </button>
       </div>
+
+      {/* 모달 */}
+      {isModalOpen && (
+        <div className="admin-menu-modal-overlay" onClick={handleCloseModal}>
+          <div className="admin-menu-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-menu-modal-header">
+              <h2 className="admin-menu-modal-title">메뉴 등록</h2>
+              <button className="admin-menu-modal-close" onClick={handleCloseModal}>
+                ×
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="admin-menu-modal-form">
+              <div className="admin-menu-modal-form-group">
+                <label className="admin-menu-modal-form-label">추가할 메뉴</label>
+                <input
+                  type="text"
+                  name="menuName"
+                  value={formData.menuName}
+                  onChange={handleInputChange}
+                  placeholder="메뉴 이름을 입력하세요."
+                  className="admin-menu-modal-form-input"
+                  required
+                />
+              </div>
+
+              <div className="admin-menu-modal-form-group">
+                <label className="admin-menu-modal-form-label">가격</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  placeholder="가격을 입력하세요."
+                  className="admin-menu-modal-form-input"
+                  required
+                />
+              </div>
+
+              <div className="admin-menu-modal-form-group">
+                <label className="admin-menu-modal-form-label">식권 매수</label>
+                <input
+                  type="number"
+                  name="tickets"
+                  value={formData.tickets}
+                  onChange={handleInputChange}
+                  placeholder="식권 매수를 입력하세요."
+                  className="admin-menu-modal-form-input"
+                  required
+                />
+              </div>
+
+              <div className="admin-menu-modal-form-group">
+                <label className="admin-menu-modal-form-label">카테고리</label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  className="admin-menu-modal-form-select"
+                  required
+                >
+                  <option value="">카테고리를 선택하세요</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="admin-menu-modal-form-group">
+                <label className="admin-menu-modal-form-label">메뉴 표시하기</label>
+                <div className="admin-menu-modal-checkbox-group">
+                  <label className="admin-menu-modal-checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="visible"
+                      checked={formData.visible}
+                      onChange={handleInputChange}
+                    />
+                    메뉴 표시
+                  </label>
+                </div>
+              </div>
+
+              <div className="admin-menu-modal-buttons">
+                <button type="button" className="admin-menu-modal-cancel-btn" onClick={handleCloseModal}>
+                  취소
+                </button>
+                <button type="submit" className="admin-menu-modal-submit-btn">
+                  등록하기
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -24,9 +24,6 @@ function NewLoginPage() {
     navigate('/ticket-purchase');
   };
 
-  const handleBack = () => {
-    navigate('/');
-  };
 
   const handleSignUp = () => {
     navigate('/sign-up');
@@ -35,8 +32,6 @@ function NewLoginPage() {
   return (
     <div className="new-login-container">
       <div className="new-login-left">
-        <button className="back-button" onClick={handleBack}>이전으로</button>
-        
         <div className="content-section">
           <h1 className="main-title">학식 생활에<br />새로운 길을 열다</h1>
           <p className="subtitle">편리하고 빠른 온라인 식권 구매로 학식 이용을 더욱 간편하게</p>

@@ -7,7 +7,7 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/student-login');
+    navigate('/');
   };
 
   return (

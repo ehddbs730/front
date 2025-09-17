@@ -64,7 +64,7 @@ function TicketPurchase() {
   ];
 
         const handleStoreClick = (store) => {
-          navigate('/menu', { state: { store } });
+          navigate('/kiosk', { state: { store } });
         };
 
   return (
@@ -79,12 +79,6 @@ function TicketPurchase() {
               <div className="ticket-purchase-label">{store.name}</div>
             </div>
           ))}
-        </div>
-        
-        <div className="ticket-purchase-alternative">
-          <Link to="/kiosk" className="ticket-purchase-alternative-link">
-            키오스크 주문
-          </Link>
         </div>
       </div>
     </>

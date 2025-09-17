@@ -1,20 +1,17 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/menuDetailPage.css';
 
 function MenuDetailPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   
-  // 전달받은 메뉴와 매장 정보
-  const { menu, store } = location.state || {
-    menu: { id: 1, name: '김치 치즈 돈까스', description: '진한 돼지고기 국물과 쫄깃한 면발', price: 6500 },
-    store: { name: '학생회관 식당' }
-  };
+  // 정적 데이터 (프로토타입용)
+  const menu = { id: 1, name: '김치 치즈 돈까스', description: '진한 돼지고기 국물과 쫄깃한 면발', price: 6500 };
+  const store = { name: '학생회관 식당' };
   
   const handleBack = () => {
-    navigate('/menu', { state: { store } });
+    navigate('/kiosk');
   };
 
   const handlePurchase = () => {
