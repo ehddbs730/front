@@ -13,6 +13,7 @@ function AdminMenuManage() {
 
   // 모달 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingMenu, setEditingMenu] = useState(null);
 
   // 메뉴 목록 상태
   const [menuList, setMenuList] = useState([
@@ -24,27 +25,53 @@ function AdminMenuManage() {
   // 카테고리 옵션
   const categories = ['한식', '중식', '일식', '정식', '분식'];
 
-  // 메뉴 등록 핸들러
+  // 메뉴 등록/수정 핸들러
   const handleMenuSubmit = (menuData) => {
-    const newMenu = {
-      id: Date.now(),
-      ...menuData
-    };
-    setMenuList(prev => [...prev, newMenu]);
+    if (editingMenu) {
+      // 수정
+      setMenuList(prev => prev.map(menu => 
+        menu.id === editingMenu.id 
+          ? { ...menu, ...menuData, id: editingMenu.id, visible: menu.visible }
+          : menu
+      ));
+      setEditingMenu(null);
+    } else {
+      // 신규 등록
+      const newMenu = {
+        id: Date.now(),
+        ...menuData
+      };
+      setMenuList(prev => [...prev, newMenu]);
+    }
   };
 
   // 모달 열기/닫기 핸들러
   const handleOpenModal = () => {
+    setEditingMenu(null);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setEditingMenu(null);
   };
 
   // 메뉴 삭제 핸들러
   const handleDelete = (id) => {
     setMenuList(prev => prev.filter(menu => menu.id !== id));
+  };
+
+  // 메뉴 수정 핸들러
+  const handleEdit = (menu) => {
+    setEditingMenu(menu);
+    setIsModalOpen(true);
+  };
+
+  // visible 토글 핸들러
+  const handleToggleVisible = (id) => {
+    setMenuList(prev => prev.map(menu => 
+      menu.id === id ? { ...menu, visible: !menu.visible } : menu
+    ));
   };
 
   // 뒤로가기 핸들러
@@ -69,7 +96,7 @@ function AdminMenuManage() {
                 <thead>
                   <tr>
                     <th>menu</th>
-                    <th>visible</th>
+                    <th>표시상태</th>
                     <th>price</th>
                     <th>tickets</th>
                     <th>category</th>
@@ -80,11 +107,24 @@ function AdminMenuManage() {
                   {menuList.map(menu => (
                     <tr key={menu.id}>
                       <td>{menu.name}</td>
-                      <td>{menu.visible ? 'Yes' : 'No'}</td>
+                      <td>
+                        <button 
+                          className={`admin-menu-toggle-btn ${menu.visible ? 'visible' : 'hidden'}`}
+                          onClick={() => handleToggleVisible(menu.id)}
+                        >
+                          {menu.visible ? '표시중' : '숨김'}
+                        </button>
+                      </td>
                       <td>{menu.price.toLocaleString()}</td>
                       <td>{menu.tickets}</td>
                       <td>{menu.category}</td>
                       <td>
+                        <button 
+                          className="admin-menu-edit-btn"
+                          onClick={() => handleEdit(menu)}
+                        >
+                          ✏️ 수정
+                        </button>
                         <button 
                           className="admin-menu-delete-btn"
                           onClick={() => handleDelete(menu.id)}
@@ -100,14 +140,18 @@ function AdminMenuManage() {
           </div>
         </div>
 
-        {/* 등록하기 버튼 */}
-        <button className="admin-menu-add-btn" onClick={handleOpenModal}>
-          등록하기
-        </button>
-
-        <button className="admin-menu-back-btn" onClick={handleBack}>
-          이전으로
-        </button>
+        {/* 버튼 그룹 */}
+        <div className="admin-menu-button-group">
+          <button className="admin-menu-back-btn" onClick={handleBack}>
+            이전으로
+          </button>
+          <button className="admin-menu-add-btn" onClick={handleOpenModal}>
+            등록하기
+          </button>
+          <button className="admin-menu-confirm-btn" onClick={() => alert('변경사항이 저장되었습니다!')}>
+            완료
+          </button>
+        </div>
       </div>
 
       {/* 모달 */}
@@ -115,6 +159,7 @@ function AdminMenuManage() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleMenuSubmit}
+        initialData={editingMenu}
       />
     </>
   );

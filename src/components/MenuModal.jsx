@@ -8,8 +8,11 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
     price: '',
     tickets: '',
     category: '',
-    visible: true
+    image: null
   });
+
+  // 이미지 미리보기 상태
+  const [imagePreview, setImagePreview] = useState(null);
 
   // 카테고리 옵션
   const categories = ['한식', '중식', '일식', '정식', '분식'];
@@ -23,27 +26,68 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
           price: initialData.price || '',
           tickets: initialData.tickets || '',
           category: initialData.category || '',
-          visible: initialData.visible !== undefined ? initialData.visible : true
+          image: initialData.image || null
         });
+        setImagePreview(initialData.imageUrl || null);
       } else {
         setFormData({
           menuName: '',
           price: '',
           tickets: '',
           category: '',
-          visible: true
+          image: null
         });
+        setImagePreview(null);
       }
     }
   }, [isOpen, initialData]);
 
   // 폼 입력 핸들러
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     }));
+  };
+
+  // 이미지 파일 핸들러
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // 파일 타입 검증
+      if (!file.type.startsWith('image/')) {
+        alert('이미지 파일만 업로드 가능합니다.');
+        return;
+      }
+      
+      // 파일 크기 검증 (5MB 제한)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('파일 크기는 5MB 이하여야 합니다.');
+        return;
+      }
+
+      setFormData(prev => ({
+        ...prev,
+        image: file
+      }));
+
+      // 미리보기 생성
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // 이미지 제거 핸들러
+  const handleRemoveImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      image: null
+    }));
+    setImagePreview(null);
   };
 
   // 폼 제출 핸들러
@@ -52,10 +96,12 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
     if (formData.menuName && formData.price && formData.tickets && formData.category) {
       const menuData = {
         name: formData.menuName,
-        visible: formData.visible,
+        visible: true, // 기본값으로 true 설정
         price: parseInt(formData.price),
         tickets: parseInt(formData.tickets),
-        category: formData.category
+        category: formData.category,
+        image: formData.image,
+        imageUrl: imagePreview
       };
       onSubmit(menuData);
       handleClose();
@@ -69,8 +115,9 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
       price: '',
       tickets: '',
       category: '',
-      visible: true
+      image: null
     });
+    setImagePreview(null);
     onClose();
   };
 
@@ -152,19 +199,33 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
           </div>
 
           <div className="menu-modal-form-group">
-            <label className="menu-modal-form-label">메뉴 표시하기</label>
-            <div className="menu-modal-checkbox-group">
-              <label className="menu-modal-checkbox-label">
-                <input
-                  type="checkbox"
-                  name="visible"
-                  checked={formData.visible}
-                  onChange={handleInputChange}
-                />
-                메뉴 표시
+            <label className="menu-modal-form-label">메뉴 이미지</label>
+            <div className="menu-modal-image-upload">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="menu-modal-file-input"
+                id="menu-image-upload"
+              />
+              <label htmlFor="menu-image-upload" className="menu-modal-file-label">
+                이미지 선택
               </label>
+              {imagePreview && (
+                <div className="menu-modal-image-preview">
+                  <img src={imagePreview} alt="메뉴 미리보기" />
+                  <button
+                    type="button"
+                    className="menu-modal-remove-image"
+                    onClick={handleRemoveImage}
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
             </div>
           </div>
+
 
           <div className="menu-modal-buttons">
             <button type="button" className="menu-modal-cancel-btn" onClick={handleClose}>
