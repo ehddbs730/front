@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import MenuModal from '../components/MenuModal';
 import '../styles/adminMenuManage.css';
 
 function AdminMenuManage() {
@@ -11,9 +10,14 @@ function AdminMenuManage() {
   // 전달받은 매장 정보
   const store = location.state?.store || { name: '학생회관 식당' };
 
-  // 모달 상태
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingMenu, setEditingMenu] = useState(null);
+  // 폼 데이터 상태
+  const [formData, setFormData] = useState({
+    menuName: '',
+    price: '',
+    tickets: '',
+    category: '',
+    visible: true
+  });
 
   // 메뉴 목록 상태
   const [menuList, setMenuList] = useState([
@@ -25,53 +29,41 @@ function AdminMenuManage() {
   // 카테고리 옵션
   const categories = ['한식', '중식', '일식', '정식', '분식'];
 
-  // 메뉴 등록/수정 핸들러
-  const handleMenuSubmit = (menuData) => {
-    if (editingMenu) {
-      // 수정
-      setMenuList(prev => prev.map(menu => 
-        menu.id === editingMenu.id 
-          ? { ...menu, ...menuData, id: editingMenu.id, visible: menu.visible }
-          : menu
-      ));
-      setEditingMenu(null);
-    } else {
-      // 신규 등록
+  // 폼 입력 핸들러
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  // 메뉴 등록 핸들러
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.menuName && formData.price && formData.tickets && formData.category) {
       const newMenu = {
         id: Date.now(),
-        ...menuData
+        name: formData.menuName,
+        visible: formData.visible,
+        price: parseInt(formData.price),
+        tickets: parseInt(formData.tickets),
+        category: formData.category
       };
       setMenuList(prev => [...prev, newMenu]);
+      setFormData({
+        menuName: '',
+        price: '',
+        tickets: '',
+        category: '',
+        visible: true
+      });
     }
-  };
-
-  // 모달 열기/닫기 핸들러
-  const handleOpenModal = () => {
-    setEditingMenu(null);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingMenu(null);
   };
 
   // 메뉴 삭제 핸들러
   const handleDelete = (id) => {
     setMenuList(prev => prev.filter(menu => menu.id !== id));
-  };
-
-  // 메뉴 수정 핸들러
-  const handleEdit = (menu) => {
-    setEditingMenu(menu);
-    setIsModalOpen(true);
-  };
-
-  // visible 토글 핸들러
-  const handleToggleVisible = (id) => {
-    setMenuList(prev => prev.map(menu => 
-      menu.id === id ? { ...menu, visible: !menu.visible } : menu
-    ));
   };
 
   // 뒤로가기 핸들러
@@ -88,6 +80,86 @@ function AdminMenuManage() {
         </div>
 
         <div className="admin-menu-manage-content">
+          {/* 메뉴 등록/수정 섹션 */}
+          <div className="admin-menu-form-section">
+            <h2 className="admin-menu-form-title">메뉴 등록</h2>
+            <form onSubmit={handleSubmit} className="admin-menu-form">
+              <div className="admin-menu-form-group">
+                <label className="admin-menu-form-label">추가할 메뉴</label>
+                <input
+                  type="text"
+                  name="menuName"
+                  value={formData.menuName}
+                  onChange={handleInputChange}
+                  placeholder="메뉴 이름을 입력하세요."
+                  className="admin-menu-form-input"
+                  required
+                />
+              </div>
+
+              <div className="admin-menu-form-group">
+                <label className="admin-menu-form-label">가격</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  placeholder="가격을 입력하세요."
+                  className="admin-menu-form-input"
+                  required
+                />
+              </div>
+
+              <div className="admin-menu-form-group">
+                <label className="admin-menu-form-label">식권 매수</label>
+                <input
+                  type="number"
+                  name="tickets"
+                  value={formData.tickets}
+                  onChange={handleInputChange}
+                  placeholder="식권 매수를 입력하세요."
+                  className="admin-menu-form-input"
+                  required
+                />
+              </div>
+
+              <div className="admin-menu-form-group">
+                <label className="admin-menu-form-label">카테고리</label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  className="admin-menu-form-select"
+                  required
+                >
+                  <option value="">카테고리를 선택하세요</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="admin-menu-form-group">
+                <label className="admin-menu-form-label">메뉴 표시하기 *</label>
+                <div className="admin-menu-checkbox-group">
+                  <label className="admin-menu-checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="visible"
+                      checked={formData.visible}
+                      onChange={handleInputChange}
+                    />
+                    메뉴 표시
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" className="admin-menu-submit-btn">
+                등록하기
+              </button>
+            </form>
+          </div>
+
           {/* 메뉴 현황 섹션 */}
           <div className="admin-menu-status-section">
             <h2 className="admin-menu-status-title">메뉴 현황</h2>
@@ -96,7 +168,7 @@ function AdminMenuManage() {
                 <thead>
                   <tr>
                     <th>menu</th>
-                    <th>표시상태</th>
+                    <th>visible</th>
                     <th>price</th>
                     <th>tickets</th>
                     <th>category</th>
@@ -107,24 +179,11 @@ function AdminMenuManage() {
                   {menuList.map(menu => (
                     <tr key={menu.id}>
                       <td>{menu.name}</td>
-                      <td>
-                        <button 
-                          className={`admin-menu-toggle-btn ${menu.visible ? 'visible' : 'hidden'}`}
-                          onClick={() => handleToggleVisible(menu.id)}
-                        >
-                          {menu.visible ? '표시중' : '숨김'}
-                        </button>
-                      </td>
+                      <td>{menu.visible ? 'Yes' : 'No'}</td>
                       <td>{menu.price.toLocaleString()}</td>
                       <td>{menu.tickets}</td>
                       <td>{menu.category}</td>
                       <td>
-                        <button 
-                          className="admin-menu-edit-btn"
-                          onClick={() => handleEdit(menu)}
-                        >
-                          ✏️ 수정
-                        </button>
                         <button 
                           className="admin-menu-delete-btn"
                           onClick={() => handleDelete(menu.id)}
@@ -140,27 +199,10 @@ function AdminMenuManage() {
           </div>
         </div>
 
-        {/* 버튼 그룹 */}
-        <div className="admin-menu-button-group">
-          <button className="admin-menu-back-btn" onClick={handleBack}>
-            이전으로
-          </button>
-          <button className="admin-menu-add-btn" onClick={handleOpenModal}>
-            등록하기
-          </button>
-          <button className="admin-menu-confirm-btn" onClick={() => alert('변경사항이 저장되었습니다!')}>
-            완료
-          </button>
-        </div>
+        <button className="admin-menu-back-btn" onClick={handleBack}>
+          이전으로
+        </button>
       </div>
-
-      {/* 모달 */}
-      <MenuModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleMenuSubmit}
-        initialData={editingMenu}
-      />
     </>
   );
 }

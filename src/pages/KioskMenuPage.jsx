@@ -16,36 +16,36 @@ function KioskMenuPage() {
       {
         name: '한식',
         menus: [
-          { id: 1, name: '된장찌개', price: 7500, imageUrl: null },
-          { id: 2, name: '김치찌개', price: 8000, imageUrl: null },
-          { id: 3, name: '순두부찌개', price: 8000, imageUrl: null },
-          { id: 4, name: '부대찌개', price: 8000, imageUrl: null },
-          { id: 5, name: '낙지덮밥', price: 8500, imageUrl: null },
-          { id: 6, name: '산채비빔밥', price: 8500, imageUrl: null }
+          { id: 1, name: '된장찌개', price: 7500 },
+          { id: 2, name: '김치찌개', price: 8000 },
+          { id: 3, name: '순두부찌개', price: 8000 },
+          { id: 4, name: '부대찌개', price: 8000 },
+          { id: 5, name: '낙지덮밥', price: 8500 },
+          { id: 6, name: '산채비빔밥', price: 8500 }
         ]
       },
       {
         name: '양식',
         menus: [
-          { id: 7, name: '스테이크', price: 12000, imageUrl: null },
-          { id: 8, name: '파스타', price: 9000, imageUrl: null },
-          { id: 9, name: '피자', price: 10000, imageUrl: null }
+          { id: 7, name: '스테이크', price: 12000 },
+          { id: 8, name: '파스타', price: 9000 },
+          { id: 9, name: '피자', price: 10000 }
         ]
       },
       {
         name: '중식',
         menus: [
-          { id: 10, name: '짜장면', price: 6000, imageUrl: null },
-          { id: 11, name: '짬뽕', price: 7000, imageUrl: null },
-          { id: 12, name: '탕수육', price: 15000, imageUrl: null }
+          { id: 10, name: '짜장면', price: 6000 },
+          { id: 11, name: '짬뽕', price: 7000 },
+          { id: 12, name: '탕수육', price: 15000 }
         ]
       },
       {
         name: '음료',
         menus: [
-          { id: 13, name: '콜라', price: 2000, imageUrl: null },
-          { id: 14, name: '사이다', price: 2000, imageUrl: null },
-          { id: 15, name: '커피', price: 3000, imageUrl: null }
+          { id: 13, name: '콜라', price: 2000 },
+          { id: 14, name: '사이다', price: 2000 },
+          { id: 15, name: '커피', price: 3000 }
         ]
       }
     ]
@@ -117,11 +117,7 @@ function KioskMenuPage() {
             {store.categories[activeCategory].menus.map((menu) => (
               <div key={menu.id} className="kiosk-menu-item" onClick={() => handleMenuClick(menu)}>
                 <div className="kiosk-menu-image">
-                  {menu.imageUrl ? (
-                    <img src={menu.imageUrl} alt={menu.name} className="kiosk-menu-image-img" />
-                  ) : (
-                    <div className="kiosk-menu-image-placeholder">이미지</div>
-                  )}
+                  <div className="kiosk-menu-image-placeholder">이미지</div>
                 </div>
                 <h3 className="kiosk-menu-name">{menu.name}</h3>
                 <div className="kiosk-menu-price">{menu.price.toLocaleString()}원</div>
