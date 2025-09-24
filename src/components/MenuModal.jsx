@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../styles/menuModal.css';
 // test
 // testing 2
-
 function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
   // 폼 데이터 상태
   const [formData, setFormData] = useState({
