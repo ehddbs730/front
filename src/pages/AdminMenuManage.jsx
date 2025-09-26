@@ -90,7 +90,12 @@ function AdminMenuManage() {
         <div className="admin-menu-manage-content">
           {/* 메뉴 현황 섹션 */}
           <div className="admin-menu-status-section">
-            <h2 className="admin-menu-status-title">메뉴 현황</h2>
+            <div className="admin-menu-status-header">
+              <h2 className="admin-menu-status-title">메뉴 현황</h2>
+              <button className="admin-menu-add-btn" onClick={handleOpenModal}>
+                등록하기
+              </button>
+            </div>
             <div className="admin-menu-table-container">
               <table className="admin-menu-table">
                 <thead>
@@ -100,6 +105,7 @@ function AdminMenuManage() {
                     <th>price</th>
                     <th>tickets</th>
                     <th>category</th>
+                    <th>수정</th>
                     <th>삭제</th>
                   </tr>
                 </thead>
@@ -125,6 +131,8 @@ function AdminMenuManage() {
                         >
                           ✏️ 수정
                         </button>
+                      </td>
+                      <td>
                         <button 
                           className="admin-menu-delete-btn"
                           onClick={() => handleDelete(menu.id)}
@@ -144,9 +152,6 @@ function AdminMenuManage() {
         <div className="admin-menu-button-group">
           <button className="admin-menu-back-btn" onClick={handleBack}>
             이전으로
-          </button>
-          <button className="admin-menu-add-btn" onClick={handleOpenModal}>
-            등록하기
           </button>
           <button className="admin-menu-confirm-btn" onClick={() => alert('변경사항이 저장되었습니다!')}>
             완료
